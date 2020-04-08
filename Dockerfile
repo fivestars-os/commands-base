@@ -8,5 +8,5 @@ WORKDIR /code
 
 COPY command.py .
 
-# Sleep infinity equivalent in alpine
-ENTRYPOINT tail -f /dev/null
+# Sleep infinity equivalent
+ENTRYPOINT ["tail", "-f",  "/dev/null"]
