@@ -42,6 +42,14 @@ def main(project_name: str):
             error=dict(color="red"),
             critical=dict(color="red", bold=True),
         ),
+        field_styles=dict(
+            asctime=dict(color="green"),
+            hostname=dict(color="magenta"),
+            levelname=dict(color="white"),
+            name=dict(color="white", bold=True),
+            programname=dict(color="cyan"),
+            username=dict(color="yellow"),
+        ),
     )
 
     # Invoke the requested command
