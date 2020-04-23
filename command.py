@@ -35,7 +35,7 @@ def main(project_name: str):
             spam=dict(color="white", faint=True),
             debug=dict(color="black", bold=True),
             verbose=dict(color="blue"),
-            info=dict(color="cyan"),
+            info=dict(color="white"),
             notice=dict(color="magenta"),
             warning=dict(color="yellow"),
             success=dict(color="green", bold=True),
