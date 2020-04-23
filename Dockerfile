@@ -67,8 +67,8 @@ ENV PATH /root/.local/bin:/root/.poetry/bin:$PATH
 COPY --from="builder" /root/.local /root/.local
 
 # Install our command script
-COPY command.py /usr/local/bin/aladdin_cmd_v2
-RUN chmod u+x /usr/local/bin/aladdin_cmd_v2
+COPY command.py /usr/local/bin/aladdin_command
+RUN chmod u+x /usr/local/bin/aladdin_command
 
 # Create the /code directory for derived images to populate and add it to sys.path
 WORKDIR /code

@@ -20,9 +20,10 @@ def main(project_name: str):
     )
 
     # Import our commands and ask them to populate the subparsers with their argument configurations
-    subparsers = parser.add_subparsers(help="Sub-commands")
-    commands_directory = pathlib.Path("/code") / "commands"
-    gather_commands(subparsers, commands_directory)
+    gather_commands(
+        subparsers=parser.add_subparsers(help="Sub-commands"),
+        commands_directory=pathlib.Path(os.environ.get("ALADDIN_COMMANDS_PATH", "/code/commands")),
+    )
 
     # Actually parse the arguments
     args = parser.parse_args()
@@ -56,10 +57,10 @@ def main(project_name: str):
     args.func(args)
 
 
-def gather_commands(subparsers: argparse.Action, directory: pathlib.Path):
+def gather_commands(subparsers: argparse.Action, commands_directory: pathlib.Path):
     """Search for available commands and gather their arguments."""
-    for _, command_name, _ in pkgutil.iter_modules([directory]):
-        commands_package = __import__(f"{directory.stem}.{command_name}")
+    for _, command_name, _ in pkgutil.iter_modules([commands_directory]):
+        commands_package = __import__(f"{commands_directory.stem}.{command_name}")
         command_module = getattr(commands_package, command_name)
         command_module.parse_args(subparsers)
 
