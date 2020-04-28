@@ -65,5 +65,5 @@ def gather_commands(subparsers: argparse.Action, commands_directory: str):
 
 
 if __name__ == "__main__":
-    logging.setLoggerClass(verboselogs.VerboseLogger)
+    verboselogs.install()
     main(os.environ.get("PROJECT_NAME"))
