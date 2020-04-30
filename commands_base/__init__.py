@@ -9,7 +9,9 @@ import coloredlogs
 import verboselogs
 
 
-def main(project_name: str):
+def main():
+    verboselogs.install()
+    project_name = os.environ.get("PROJECT_NAME")
     # Discover all the commands defined in derived image
     parser = argparse.ArgumentParser(description=f"Managing {project_name} commands")
     parser.add_argument(
@@ -52,8 +54,11 @@ def main(project_name: str):
         ),
     )
 
-    # Invoke the requested command
-    args.func(args)
+    try:
+        # Invoke the requested command
+        args.func(args)
+    except AttributeError:
+        parser.print_help()
 
 
 def gather_commands(subparsers: argparse.Action, commands_directory: str):
@@ -65,5 +70,4 @@ def gather_commands(subparsers: argparse.Action, commands_directory: str):
 
 
 if __name__ == "__main__":
-    verboselogs.install()
-    main(os.environ.get("PROJECT_NAME"))
+    main()
