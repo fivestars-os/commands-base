@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "commands-base"
-version = "2.0.0"
-description = "Aladdin base docker image for commands containers"
+version = "2.0.1"
+description = "Aladdin base command for commands containers"
 authors = ["Fivestars <dev@fivestars.com>"]
 
 [tool.poetry.dependencies]

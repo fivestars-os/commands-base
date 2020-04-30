@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="commands-base",
-    version="2.0.0",
+    version="2.0.1",
     author="Fivestars",
     author_email="dev@fivestars.com",
     description="Base command for aladdin commands",
