@@ -29,7 +29,7 @@ RUN pip install --upgrade pip
 COPY pip.conf /etc/pip.conf
 
 # Install poetry
-ARG POETRY_VERSION=1.0.5
+ENV POETRY_VERSION=1.0.5
 ADD https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py /tmp/get-poetry.py
 RUN python /tmp/get-poetry.py --version $POETRY_VERSION
 
