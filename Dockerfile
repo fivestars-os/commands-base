@@ -39,10 +39,10 @@ COPY poetry.toml /root/.config/pypoetry/config.toml
 # Install our python package and dependencies
 WORKDIR /build
 COPY pyproject.toml poetry.lock setup.py README.md ./
-COPY commands_base commands_base
 RUN . /root/.poetry/env \
- && poetry install \
- && pip install .
+ && poetry install --no-root
+COPY commands_base commands_base
+RUN pip install .
 ### END BUILDER IMAGE ##################################################################
 
 

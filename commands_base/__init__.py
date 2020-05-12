@@ -9,11 +9,13 @@ import coloredlogs
 import verboselogs
 
 
+verboselogs.install()
+project_name = os.environ.get("PROJECT_NAME")
+
+
 def main():
-    verboselogs.install()
-    project_name = os.environ.get("PROJECT_NAME")
     # Discover all the commands defined in derived image
-    parser = argparse.ArgumentParser(description=f"Managing {project_name} commands")
+    parser = argparse.ArgumentParser(description="Managing {} commands".format(project_name))
     parser.add_argument(
         "--log-level",
         choices=sorted(logging._nameToLevel, key=lambda name: logging._nameToLevel[name]),
@@ -54,11 +56,11 @@ def main():
         ),
     )
 
-    try:
-        # Invoke the requested command
-        args.func(args)
-    except AttributeError:
-        parser.print_help()
+    if not hasattr(args, "func"):
+        # bare `aladdin_command` was run
+        return parser.print_help()
+    # Invoke the requested command
+    args.func(args)
 
 
 def gather_commands(subparsers: argparse.Action, commands_directory: str):
@@ -67,7 +69,3 @@ def gather_commands(subparsers: argparse.Action, commands_directory: str):
         loader = finder.find_module(command_name)
         command_module = loader.load_module()
         command_module.parse_args(subparsers)
-
-
-if __name__ == "__main__":
-    main()
