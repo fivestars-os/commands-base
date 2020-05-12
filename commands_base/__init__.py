@@ -9,11 +9,15 @@ import coloredlogs
 import verboselogs
 
 
-verboselogs.install()
-project_name = os.environ.get("PROJECT_NAME")
+def cli():
+    """
+    Entry point for command-line use
+    """
+    verboselogs.install()
+    main(os.environ.get("PROJECT_NAME"))
 
 
-def main():
+def main(project_name: str):
     # Discover all the commands defined in derived image
     parser = argparse.ArgumentParser(description="Managing {} commands".format(project_name))
     parser.add_argument(

@@ -16,4 +16,4 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
-aladdin_command = "commands_base:main"
+aladdin_command = "commands_base:cli"

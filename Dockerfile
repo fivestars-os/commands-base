@@ -29,7 +29,7 @@ RUN pip install --upgrade pip
 COPY pip.conf /etc/pip.conf
 
 # Install poetry
-ENV POETRY_VERSION=1.0.5
+ARG POETRY_VERSION=1.0.5
 ADD https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py /tmp/get-poetry.py
 RUN python /tmp/get-poetry.py --version $POETRY_VERSION
 
@@ -38,7 +38,7 @@ COPY poetry.toml /root/.config/pypoetry/config.toml
 
 # Install our python package and dependencies
 WORKDIR /build
-COPY pyproject.toml poetry.lock setup.py README.md ./
+COPY pyproject.toml poetry.lock README.md ./
 RUN . /root/.poetry/env \
  && poetry install --no-root
 COPY commands_base commands_base
