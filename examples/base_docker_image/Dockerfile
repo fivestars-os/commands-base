@@ -4,7 +4,6 @@ ENV PROJECT_NAME='commands-base-example'
 
 # Poetry (https://python-poetry.org/) is already installed and available too
 # So you can do the following:
-
 # COPY pyproject.toml poetry.lock ./
 # RUN poetry install
 
