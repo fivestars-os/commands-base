@@ -5,7 +5,8 @@ ENV PROJECT_NAME='commands-base-example'
 
 RUN apt-get update && apt-get install -y git && \
     pip install git+https://github.com/fivestars-os/commands-base@2.0.1 && \
-    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /the/workdir/path
 ENV ALADDIN_COMMANDS_PATH='/the/workdir/path'
 
