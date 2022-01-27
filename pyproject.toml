@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "commands-base"
-version = "2.0.1"
+version = "2.0.2"
 description = "Aladdin base command for commands containers"
 authors = ["Fivestars <dev@fivestars.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 verboselogs = "^1.7"
 coloredlogs = "^14.0"
 
