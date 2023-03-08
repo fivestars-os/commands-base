@@ -9,6 +9,11 @@ import coloredlogs
 import verboselogs
 
 
+DEFAULT_LOG_FORMAT = "%(levelname)-8s %(name)s(%(lineno)d) %(message)s"
+ALADDIN_COMMANDS_LOG_LEVEL = os.getenv("ALADDIN_COMMANDS_LOG_LEVEL", "INFO")
+ALADDIN_COMMANDS_LOG_FORMAT = os.getenv("ALADDIN_COMMANDS_LOG_FORMAT", DEFAULT_LOG_FORMAT)
+
+
 def cli():
     """
     Entry point for command-line use
@@ -23,7 +28,7 @@ def main(project_name: str):
     parser.add_argument(
         "--log-level",
         choices=sorted(logging._nameToLevel, key=lambda name: logging._nameToLevel[name]),
-        default="INFO",
+        default=ALADDIN_COMMANDS_LOG_LEVEL,
     )
 
     # Import our commands and ask them to populate the subparsers with their argument configurations
@@ -38,7 +43,7 @@ def main(project_name: str):
     # Use the provided log level and upgrade our logging capabilities
     coloredlogs.install(
         level=logging._nameToLevel[args.log_level],
-        fmt="%(levelname)-8s %(name)s(%(lineno)d) %(message)s",
+        fmt=ALADDIN_COMMANDS_LOG_FORMAT,
         level_styles=dict(
             spam=dict(color="white", faint=True),
             debug=dict(color="black", bold=True),
