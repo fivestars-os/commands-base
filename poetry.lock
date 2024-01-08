@@ -29,18 +29,7 @@ files = [
 ]
 
 [package.dependencies]
-pyreadline = {version = "*", markers = "sys_platform == \"win32\" and python_version < \"3.8\""}
 pyreadline3 = {version = "*", markers = "sys_platform == \"win32\" and python_version >= \"3.8\""}
-
-[[package]]
-name = "pyreadline"
-version = "2.1"
-description = "A python implmementation of GNU readline."
-optional = false
-python-versions = "*"
-files = [
-    {file = "pyreadline-2.1.zip", hash = "sha256:4530592fc2e85b25b1a9f79664433da09237c1a270e4d78ea5aa3a2c7229e2d1"},
-]
 
 [[package]]
 name = "pyreadline3"
@@ -66,5 +55,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.6"
-content-hash = "c017089f28888f31dd5506b6ebf4d9e5475f70cc48ef7c820f1f98e0c06c3529"
+python-versions = "^3.8"
+content-hash = "7e1fbd36685c676f74ac9b5930145b8c73b9b07bd224b79c6dafd81957c7ea7f"

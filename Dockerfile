@@ -40,7 +40,7 @@ RUN python -m venv /venv && \
 COPY pyproject.toml poetry.lock README.md ./
 RUN poetry install --no-root
 COPY commands_base commands_base
-RUN poetry install
+RUN poetry install && pip3 install .
 ### END BUILDER IMAGE ##################################################################
 
 
