@@ -20,29 +20,27 @@ RUN apt-get update \
     g++ \
     make \
     libc6-dev \
+    curl \
  && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip
-RUN pip install --upgrade pip
-
-# Configure pip
-COPY pip.conf /etc/pip.conf
-
 # Install poetry
-ARG POETRY_VERSION=1.0.5
-ADD https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py /tmp/get-poetry.py
-RUN python /tmp/get-poetry.py --version $POETRY_VERSION
+ARG POETRY_VERSION=1.7.1
+ENV PATH /root/.local/bin:$PATH
+RUN curl -sSL https://install.python-poetry.org -o install-poetry.py && \
+    python install-poetry.py --version $POETRY_VERSION
+ENV POETRY_VIRTUALENVS_CREATE="false"
 
-# Configure poetry
-COPY poetry.toml /root/.config/pypoetry/config.toml
+ENV PATH /venv/bin:$PATH
+ENV VIRTUAL_ENV=/venv
+
+RUN python -m venv /venv && \
+    pip install --upgrade pip
 
 # Install our python package and dependencies
-WORKDIR /build
 COPY pyproject.toml poetry.lock README.md ./
-RUN . /root/.poetry/env \
- && poetry install --no-root
+RUN poetry install --no-root
 COPY commands_base commands_base
-RUN pip install .
+RUN poetry install
 ### END BUILDER IMAGE ##################################################################
 
 
@@ -54,20 +52,13 @@ RUN pip install .
 FROM python:3.8-slim
 LABEL maintainer="dev@fivestars.com"
 
-# Configure pip
-COPY --from=builder /etc/pip.conf /etc/pip.conf
+# Add poetry directories to PATH
+ENV PATH /root/.local/bin:/venv/bin:$PATH
 
 # Copy installed python packages from build image
-COPY --from=builder /root/.poetry /root/.poetry
-
-# Configure poetry
-COPY --from=builder /root/.config/pypoetry /root/.config/pypoetry
-
-# Add poetry directories to PATH
-ENV PATH /root/.local/bin:/root/.poetry/bin:$PATH
-
-# Copy installed packages from build image
 COPY --from=builder /root/.local /root/.local
+# Copy installed packages from build image
+COPY --from=builder /venv /venv
 
 # Create the /code directory for derived images to populate and add it to sys.path
 WORKDIR /code

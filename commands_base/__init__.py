@@ -75,6 +75,6 @@ def main(project_name: str):
 def gather_commands(subparsers: argparse.Action, commands_directory: str):
     """Search for available commands and gather their arguments."""
     for finder, command_name, _ in pkgutil.iter_modules([commands_directory]):
-        loader = finder.find_module(command_name)
-        command_module = loader.load_module()
+        spec = finder.find_spec(command_name)
+        command_module = spec.loader.load_module()
         command_module.parse_args(subparsers)
