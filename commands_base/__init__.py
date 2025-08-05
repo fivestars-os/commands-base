@@ -2,32 +2,41 @@
 
 import argparse
 import logging
-import pkgutil
 import os
+import pkgutil
 
 import coloredlogs
 import verboselogs
 
-
 DEFAULT_LOG_FORMAT = "%(levelname)-8s %(name)s(%(lineno)d) %(message)s"
 ALADDIN_COMMANDS_LOG_LEVEL = os.getenv("ALADDIN_COMMANDS_LOG_LEVEL", "INFO")
-ALADDIN_COMMANDS_LOG_FORMAT = os.getenv("ALADDIN_COMMANDS_LOG_FORMAT", DEFAULT_LOG_FORMAT)
+ALADDIN_COMMANDS_LOG_FORMAT = os.getenv(
+    "ALADDIN_COMMANDS_LOG_FORMAT", DEFAULT_LOG_FORMAT
+)
+ALADDIN_COMMANDS_LOG_SETUP_DISABLED = os.getenv(
+    "ALADDIN_COMMANDS_LOG_SETUP_DISABLED", "0"
+).lower() in {"1", "true"}
 
 
 def cli():
     """
     Entry point for command-line use
     """
-    verboselogs.install()
+    if not ALADDIN_COMMANDS_LOG_SETUP_DISABLED:
+        verboselogs.install()
     main(os.environ.get("PROJECT_NAME"))
 
 
 def main(project_name: str):
     # Discover all the commands defined in derived image
-    parser = argparse.ArgumentParser(description="Managing {} commands".format(project_name))
+    parser = argparse.ArgumentParser(
+        description="Managing {} commands".format(project_name)
+    )
     parser.add_argument(
         "--log-level",
-        choices=sorted(logging._nameToLevel, key=lambda name: logging._nameToLevel[name]),
+        choices=sorted(
+            logging._nameToLevel, key=lambda name: logging._nameToLevel[name]
+        ),
         default=ALADDIN_COMMANDS_LOG_LEVEL,
     )
 
@@ -40,30 +49,31 @@ def main(project_name: str):
     # Actually parse the arguments
     args = parser.parse_args()
 
-    # Use the provided log level and upgrade our logging capabilities
-    coloredlogs.install(
-        level=logging._nameToLevel[args.log_level],
-        fmt=ALADDIN_COMMANDS_LOG_FORMAT,
-        level_styles=dict(
-            spam=dict(color="white", faint=True),
-            debug=dict(color="black", bold=True),
-            verbose=dict(color="blue"),
-            info=dict(color="white"),
-            notice=dict(color="magenta"),
-            warning=dict(color="yellow"),
-            success=dict(color="green", bold=True),
-            error=dict(color="red"),
-            critical=dict(color="red", bold=True),
-        ),
-        field_styles=dict(
-            asctime=dict(color="green"),
-            hostname=dict(color="magenta"),
-            levelname=dict(color="white"),
-            name=dict(color="white", bold=True),
-            programname=dict(color="cyan"),
-            username=dict(color="yellow"),
-        ),
-    )
+    if not ALADDIN_COMMANDS_LOG_SETUP_DISABLED:
+        # Use the provided log level and upgrade our logging capabilities
+        coloredlogs.install(
+            level=logging._nameToLevel[args.log_level],
+            fmt=ALADDIN_COMMANDS_LOG_FORMAT,
+            level_styles=dict(
+                spam=dict(color="white", faint=True),
+                debug=dict(color="black", bold=True),
+                verbose=dict(color="blue"),
+                info=dict(color="white"),
+                notice=dict(color="magenta"),
+                warning=dict(color="yellow"),
+                success=dict(color="green", bold=True),
+                error=dict(color="red"),
+                critical=dict(color="red", bold=True),
+            ),
+            field_styles=dict(
+                asctime=dict(color="green"),
+                hostname=dict(color="magenta"),
+                levelname=dict(color="white"),
+                name=dict(color="white", bold=True),
+                programname=dict(color="cyan"),
+                username=dict(color="yellow"),
+            ),
+        )
 
     if not hasattr(args, "func"):
         # bare `aladdin_command` was run

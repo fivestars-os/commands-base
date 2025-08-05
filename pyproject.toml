@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "commands-base"
-version = "2.2.0"
+version = "2.2.1"
 description = "Aladdin base command for commands containers"
 authors = ["Fivestars <dev@fivestars.com>"]
 
